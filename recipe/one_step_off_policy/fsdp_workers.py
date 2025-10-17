@@ -16,6 +16,7 @@
 import asyncio
 import logging
 import os
+import datetime
 
 import torch
 import torch.distributed
@@ -164,6 +165,7 @@ class RolloutWorker(ActorRolloutRefWorker):
                 rank=rank,
                 world_size=world_size,
                 init_method=os.environ.get("DIST_INIT_METHOD", None),
+                timeout=datetime.timedelta(seconds=config.get("nccl_timeout", 600)),
             )
         # TODO(haibin.lin):
         # As of now the type of config is DictConfig, if we assign config.profiler with ProfilerConfig,
